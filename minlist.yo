@@ -1,0 +1,40 @@
+0x000:                      |          .pos 0
+0x000: 30f40002000000000000 |          irmovq stack, %rsp
+0x00a: 30f77000000000000000 |          irmovq list, %rdi
+0x014: 801e00000000000000   |          call minList
+0x01d: 00                   |          halt
+                            | #
+                            | # minList: return the minimum value of the elements of a NULL terminated list
+                            | # parameter: %rdi contains the value list, which
+                            | #            is the adress of the first element in the list
+                            | # return: %rax contains the minimum value in the list
+0x01e:                      | minList: 
+0x01e: 50070000000000000000 |          mrmovq 0(%rdi), %rax #moves first value into rax
+0x028: 30f60800000000000000 |          irmovq 8, %rsi #rsi = 8
+0x032: 6067                 |          addq %rsi, %rdi # make rdi point to 2nd/go down the list if needed
+0x034:                      | loop:    
+                            |          
+0x034: 50270000000000000000 |          mrmovq 0(%rdi), %rdx # rdx = 53
+0x03e: 6222                 |          andq %rdx, %rdx # if zero and zero = 0, end of list. 
+0x040: 736900000000000000   |          je done
+                            |          
+0x049: 6102                 |          subq %rax, %rdx # if 53 - 23
+0x04b: 755e00000000000000   |          jge skip # if 53- 23 >= 0, then we know the number in rdx is BIGGER, we want smaller.
+0x054: 50070000000000000000 |          mrmovq 0(%rdi), %rax # if we get here, we move rdi into rax bc rdi < previous rdx. -7 < 22 
+                            |          
+0x05e: 6067                 | skip:    addq %rsi, %rdi # increment rdi pointer to next item in list
+0x060: 703400000000000000   |          jmp loop        # go back to loop, since we aren't at zero/ done searching the list/array.
+                            | 
+0x069: 90                   | done:     ret  
+0x070:                      |          .align 8
+0x070: 1600000000000000     | list:    .quad 22
+0x078: 3500000000000000     |          .quad 53
+0x080: f9ffffffffffffff     |          .quad -7 
+0x088: 0100000000000000     |          .quad 1
+0x090: feffffffffffffff     |          .quad -2
+0x098: 2a00000000000000     |          .quad 42
+0x0a0: fbffffffffffffff     |          .quad -5
+0x0a8: 0000000000000000     |          .quad 0  #indicates the end of the list
+                            | #
+0x200:                      |          .pos 0x200
+0x200:                      | stack:

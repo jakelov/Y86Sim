@@ -1,0 +1,53 @@
+                            | # This program calls a minBST function that returns the minimum value
+                            | # in a binary search tree.  The parameter to minBST is in %rdi.
+                            | # %rdi contains the address of the root node. The return value is
+                            | # stored in %rax. A node consists of three 8-byte fields: address
+                            | # of left child, address of right child, value of node.
+0x000:                      |        .pos 0
+0x000: 30f40002000000000000 |        irmovq stack, %rsp
+0x00a: 30f77000000000000000 |        irmovq node0, %rdi
+0x014: 30f00000000000000000 |        irmovq 0, %rax
+0x01e: 802800000000000000   |        call minBST
+0x027: 00                   |        halt
+0x028:                      | minBST: #address of root node is in %rdi
+                            |         #returns the minimum value in the tree in register %rax
+0x028: 30f21000000000000000 |         irmovq $16, %rdx #rdx holds immeditate for 16
+0x032:                      | loop:
+0x032: 50170000000000000000 |         mrmovq (%rdi), %rcx #rcx holds left child ADDRESS
+0x03c: 6211                 |         andq %rcx, %rcx #if rcx is zero, then we know we have no child
+0x03e: 735a00000000000000   |         je load # will take the value of rdi (root) and take it to load
+                            |         # IF WE GET PAST HERE, WE HAVE A LEFT CHILD, SO WE MUST LOOP.
+                            |         # WE NEED TO MOVE RDI TO THE ADDRESS OF IT'S LEFT CHILD.
+                            |         # RCX IS THE ADDRESS OF IT'S LEFT CHILD.
+0x047: 50710000000000000000 |         mrmovq (%rcx), %rdi # WILL STORE THE ADDRESS OF THE LEFT CHILD AS THE NEW ROOT.
+0x051: 703200000000000000   |         jmp loop
+                            |         
+0x05a:                      | load:   # this function will add 16 to the address of rdi to get the address of it's data
+                            |         # then store it's data into RAX
+0x05a: 6027                 |         addq %rdx, %rdi 
+0x05c: 50070000000000000000 |         mrmovq (%rdi), %rax # rax would store, 10, 4, 12, 2, 11, etc 
+0x066: 706f00000000000000   |         jmp done:
+                            |     
+0x06f: 90                   | done:  ret
+                            | #
+0x070:                      |        .align 8
+0x070: 8800000000000000     | node0: .quad node1    #address of left child
+0x078: a000000000000000     |        .quad node2    #address of right child
+0x080: 0a00000000000000     |        .quad 10       #value in the node
+0x088: b800000000000000     | node1: .quad node3
+0x090: 0000000000000000     |        .quad 0
+0x098: 0400000000000000     |        .quad 4
+0x0a0: d000000000000000     | node2: .quad node4
+0x0a8: e800000000000000     |        .quad node5
+0x0b0: 0c00000000000000     |        .quad 12
+0x0b8: 0000000000000000     | node3: .quad 0
+0x0c0: 0000000000000000     |        .quad 0
+0x0c8: 0200000000000000     |        .quad 2        #here is the minimum value
+0x0d0: 0000000000000000     | node4: .quad 0
+0x0d8: 0000000000000000     |        .quad 0
+0x0e0: 0b00000000000000     |        .quad 11
+0x0e8: 0000000000000000     | node5: .quad 0
+0x0f0: 0000000000000000     |        .quad 0
+0x0f8: 0f00000000000000     |        .quad 15
+0x200:                      |        .pos 0x200
+0x200: 0000000000000000     | stack: .quad 0

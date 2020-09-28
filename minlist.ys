@@ -1,0 +1,40 @@
+         .pos 0
+         irmovq stack, %rsp
+         irmovq list, %rdi
+         call minList
+         halt
+#
+# minList: return the minimum value of the elements of a NULL terminated list
+# parameter: %rdi contains the value list, which
+#            is the adress of the first element in the list
+# return: %rax contains the minimum value in the list
+minList: 
+         mrmovq 0(%rdi), %rax #moves first value into rax
+         irmovq 8, %rsi #rsi = 8
+         addq %rsi, %rdi # make rdi point to 2nd/go down the list if needed
+loop:    
+         
+         mrmovq 0(%rdi), %rdx # rdx = 53
+         andq %rdx, %rdx # if zero and zero = 0, end of list. 
+         je done
+         
+         subq %rax, %rdx # if 53 - 23
+         jge skip # if 53- 23 >= 0, then we know the number in rdx is BIGGER, we want smaller.
+         mrmovq 0(%rdi), %rax # if we get here, we move rdi into rax bc rdi < previous rdx. -7 < 22 
+         
+skip:    addq %rsi, %rdi # increment rdi pointer to next item in list
+         jmp loop        # go back to loop, since we aren't at zero/ done searching the list/array.
+
+done:     ret  
+         .align 8
+list:    .quad 22
+         .quad 53
+         .quad -7 
+         .quad 1
+         .quad -2
+         .quad 42
+         .quad -5
+         .quad 0  #indicates the end of the list
+#
+         .pos 0x200
+stack:

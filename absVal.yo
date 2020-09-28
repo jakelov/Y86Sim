@@ -1,0 +1,58 @@
+0x000:                      | .pos 0
+                            | #Put your code here. You'll need some 
+                            | #initialization code and then five chunks
+                            | #of code that are basically identical.
+                            | #
+0x000: 30f79800000000000000 | irmovq list, %rdi
+0x00a: 6322                 | xorq %rdx, %rdx #holds 0
+0x00c: 10                   | nop
+0x00d: 10                   | nop
+0x00e: 10                   | nop
+0x00f: 30f20200000000000000 | irmovq $2, %rdx
+0x019: 10                   | nop
+0x01a: 10                   | nop
+0x01b: 10                   | nop
+0x01c: 40270000000000000000 | rmmovq %rdx, 0(%rdi)
+0x026: 10                   |     nop
+0x027: 10                   |     nop
+0x028: 10                   |     nop
+0x029: 30f20500000000000000 | irmovq $5, %rdx
+0x033: 10                   |     nop
+0x034: 10                   |     nop
+0x035: 10                   |     nop
+0x036: 40270800000000000000 | rmmovq %rdx, 8(%rdi)
+0x040: 10                   |     nop
+0x041: 10                   |     nop
+0x042: 10                   |     nop
+0x043: 30f20f00000000000000 | irmovq $15, %rdx
+0x04d: 10                   |     nop
+0x04e: 10                   |     nop
+0x04f: 10                   |     nop
+0x050: 40271000000000000000 | rmmovq %rdx, 16(%rdi)
+0x05a: 10                   |     nop
+0x05b: 10                   |     nop
+0x05c: 10                   |     nop
+0x05d: 30f20000000000000000 |     irmovq $0, %rdx
+0x067: 10                   |     nop
+0x068: 10                   |     nop
+0x069: 10                   |     nop
+0x06a: 40271800000000000000 | rmmovq %rdx, 24(%rdi)
+0x074: 10                   |     nop
+0x075: 10                   |     nop
+0x076: 10                   |     nop
+0x077: 30f20100000000000000 | irmovq $1, %rdx
+0x081: 10                   |     nop
+0x082: 10                   |     nop
+0x083: 10                   |     nop
+0x084: 40272000000000000000 | rmmovq %rdx, 32(%rdi)
+0x08e: 10                   |     nop
+0x08f: 10                   |     nop
+0x090: 10                   |     nop
+0x091: 00                   | halt
+                            | 
+0x098:                      |     .align 8
+0x098: feffffffffffffff     |     list: .quad -2      #at end: 2
+0x0a0: 0500000000000000     |     .quad 5             #at end: 5
+0x0a8: f1ffffffffffffff     |     .quad -15           #at end: f
+0x0b0: 0000000000000000     |     .quad 0             #at end: 0
+0x0b8: ffffffffffffffff     |     .quad -1            #at end: 1
